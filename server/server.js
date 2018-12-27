@@ -38,3 +38,5 @@ app.listen(3000, () => {
 // console.log('Unable to save', e);
 //  mongoose.connection.close();
 // });
+
+module.exports = {app};
