@@ -98,17 +98,18 @@ app.patch('/todos/:id', (req, res) =>{
 
 // POST GET _ User
 app.post('/user',(req, res)=>{
-  // console.log(req.body);
-  var user = new User ({
-    text: req.body.text
-  })
+  var body = _.pick(req.body, ['email', 'password']);
+  var user = new User (body);
 
-  user.save().then((doc)=>{
-    res.send(doc);
-  },(e) => {
+  user.save().then(()=>{
+    return user.generateAuthToken();
+  }).then((token)=>{
+    res.header('x-auth', token).send(user);
+  }).catch ((e) => {
     res.status(400).send(e);
   });
 });
+
 
 app.get('/user',(req, res)=>{
   User.find().then((user)=>{
