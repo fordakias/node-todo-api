@@ -98,7 +98,7 @@ app.patch('/todos/:id', (req, res) =>{
 
 
 // POST GET _ User
-app.post('/user',(req, res)=>{
+app.post('/users',(req, res)=>{
   var body = _.pick(req.body, ['email', 'password']);
   var user = new User (body);
 
@@ -113,7 +113,7 @@ app.post('/user',(req, res)=>{
 
 
 
-app.get('/user/me',authenticate, (req, res) =>{
+app.get('/users/me',authenticate, (req, res) =>{
     res.send(req.user);
 });
 
