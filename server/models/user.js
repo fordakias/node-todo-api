@@ -7,14 +7,14 @@ const bcrypt = require('bcryptjs');
 var UserSchema = new mongoose.Schema({
   email: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
-    minlenght: 1,
+    minlength: 1,
     unique: true,
     validate: {
-      validator: validator.isEmail
-      },
+      validator: validator.isEmail,
       message: '{VALUE} is not a valid email'
+      }
     },
   password: {
     type: String,
@@ -24,11 +24,11 @@ var UserSchema = new mongoose.Schema({
   tokens: [{
     access:{
       type: String,
-      require: true
+      required: true
     },
     token:{
       type: String,
-      require: true
+      required: true
     }
   }]
 });
@@ -49,6 +49,16 @@ UserSchema.methods.generateAuthToken = function (){
   user.tokens = user.tokens.concat([{access, token}]);
   return user.save().then(()=>{
     return token;
+  });
+};
+
+UserSchema.methods.removeToken = function (token) {
+  var user = this;
+
+  return user.update({
+    $pull: {
+      tokens: {token}
+      }
   });
 };
 
